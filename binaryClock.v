@@ -1,17 +1,23 @@
 module binaryClock  (
     input wire clk,
-    output reg led[0],
-    output reg led[1],
-    output reg led[2],
-    output reg led[3],
-    output reg led[4],
-    output reg led[5]
+    output wire [5:0] led
 );
 
-    reg [24:0]
+    reg [24:0] counter = 0;
+    reg [5:0] led_value = 0;
+
+    assign led = ~led_value;
+
+    initial begin
+        led_value = 6'b000000;
+    end
 
     always @(posedge clk) begin
-        
+        counter <= counter + 1;
+        if (counter == 27_000_000 - 1) begin
+            led_value <= led_value + 1'b1;
+            counter <= 0;
+        end
     end
 
 endmodule
